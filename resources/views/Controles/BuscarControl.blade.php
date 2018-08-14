@@ -11,11 +11,11 @@
 <h2 class="font-bold">Buscar Historia</h2>
 @endsection
 @section('Menu')
-<li class="active">
+<li class="">
 	<a href=""><i class="fa fa-edit"></i><span class="nav-label">Historias</span><span class="fa arrow">
 	</span></a>
 	<ul class="nav nav-second-level">
-    	<li class="active">
+    	<li class="">
     		<a href="">Buscar Historia</a>
     	</li>
     	<li>
@@ -36,11 +36,11 @@
     	</li>
 	</ul>
 </li>
-<li>
+<li class="active">
 	<a href="metrics.html"><i class="fa fa-files-o"></i> <span class="nav-label">Controles</span>  </a>
     <ul class="nav nav-second-level">
-        <li>
-            <a href="/BuscarControl">Buscar Control</a>
+        <li class="active">
+            <a href="">Buscar Control</a>
         </li>
         <li class="">
             <a>
@@ -67,7 +67,10 @@
 		<div class="row">
 			<div class="form-group col-sm-2">
         		<input type="text" class="form-control input-sm" name="num_historia" placeholder="N° Historia">	
-			</div> 
+			</div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control input-sm" name="num_historia" placeholder="N° Control"> 
+            </div> 
 			<div class="form-group col-sm-2">
         		<input type="text" class="form-control input-sm" name="cedula" placeholder="C.I">	
 			</div> 
@@ -90,11 +93,7 @@
 					<input type="text" class="form-control input-sm" name="edad" placeholder="Edad Paciente">
         	</div>
         </div>
-
-        	<div class="col-sm-3 m-t-xs">
-        		<label> <input type="checkbox" class="i-checks"> Oncológico</label>
-        	</div>
-        	<button class="btn btn-primary pull-right" type="submit">Buscar Historia</button>
+        	<button class="btn btn-primary pull-right" type="submit">Buscar Control</button>
 	</div>
 </div>
 @endsection

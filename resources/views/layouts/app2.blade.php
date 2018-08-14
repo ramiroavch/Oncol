@@ -60,7 +60,7 @@
                 </nav>
             </div>
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
+                <div class="col-lg-12">
                     @yield('title')
                     <ol class="breadcrumb">
                     </ol>

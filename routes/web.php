@@ -22,4 +22,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/AgregarHistoria', 'RedirectionsController@AgregarHistoria')->name('AgregarHistoria');
 
 Route::get('/AgregarHistoriaNo', 'RedirectionsController@AgregarHistoriaNo')->name('AgregarHistoriaNo');
+
+Route::get('/AgregarControl','RedirectionsController@AgregarControl')->name('AgregarControl');
+
+Route::get('/AgregarControlNo','RedirectionsController@AgregarControlNo')->name('AgregarControlNo');
+
+Route::get('/BuscarControl','RedirectionsController@BuscarControl')->name('BuscarControl');
+
+Route::resource('new_oncol','HistoriaController');
  
