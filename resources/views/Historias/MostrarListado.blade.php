@@ -1,21 +1,4 @@
-@extends('layouts.app2')
-
-@section('includes')
-<link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
-@endsection
-
-@section('title')
-<form class="form-group" method="GET" action="VerHistoria" enctype="multipart/form-data">
- @csrf
-<h2 class="font-bold">Buscar Historia</h2>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $error)
-             <li>{{ $error }}</li>
+}</li>
              @endforeach
         </ul>
     </div>
@@ -109,5 +92,13 @@
 
 @section('mainscript')
 <script src="js/plugins/iCheck/icheck.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                });
+            });
+        </script>
 @endsection
 </form>

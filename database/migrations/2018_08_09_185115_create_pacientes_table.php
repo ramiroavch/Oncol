@@ -16,7 +16,7 @@ class CreatePacientesTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('pacientes', function (Blueprint $table) {
             $table->increments('id');
-            $table->mediumInteger('ci')->nullable();
+            $table->bigInteger('ci')->nullable();
             $table->string('nombre1');
             $table->string('nombre2')->nullable();
             $table->string('apellido1');

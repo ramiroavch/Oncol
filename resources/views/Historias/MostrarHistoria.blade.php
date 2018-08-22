@@ -11,7 +11,7 @@
 @endsection
 
 @section('title')
-<form class="form-group" method="POST" action="VerHistoria" enctype="multipart/form-data">
+<form class="form-group" method="POST" action="new_oncol" enctype="multipart/form-data">
     @csrf
 <h2 class="font-bold">Agregar Nueva Historia</h2>
 @if ($errors->any())
@@ -29,14 +29,14 @@
 @endsection
 
 @section('Menu')
-<li class="active">
+<li class="">
     <a href=""><i class="fa fa-edit"></i><span class="nav-label">Historias</span><span class="fa arrow">
     </span></a>
     <ul class="nav nav-second-level">
         <li class="">
             <a href="/home">Buscar Historia</a>
         </li>
-        <li class="active">
+        <li class="">
             <a>
                 <span class="nav-label">Agregar Historia
                 </span>
@@ -44,7 +44,7 @@
                 </span>
             </a>
             <ul class="nav nav-third-level">
-                <li class="active">
+                <li class="">
                     <a href="/AgregarHistoria">Oncológico</a>
                 </li>
                 <li>

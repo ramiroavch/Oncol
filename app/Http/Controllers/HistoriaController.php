@@ -7,6 +7,7 @@ use App\H_Oncol;
 use App\Paciente;
 use App\Http\Requests\StoreHistoriaRequest;
 use resources\views;
+use Illuminate\Support\Facades\DB;
 
 class HistoriaController extends Controller
 {
@@ -15,9 +16,68 @@ class HistoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(($request->get('num_historia')!="")||($request->get('cedula')!="")||(($request->get('nombre1')!="")&&($request->get('apellido1')!="")))
+        {
+            $nhistoria=trim($request->get('num_historia'));
+            $ci=trim($request->get('cedula'));
+            $nombre1=trim($request->get('nombre1'));
+            $apellido1=trim($request->get('apellido1'));
+            $nombre2=trim($request->get('nombre2'));
+            $apellido1=trim($request->get('apellido2'));
+            $oncol=trim($request->get('oncologico'));
+            $table;
+            $fkhist;
+            if($oncol=="true"){
+                $table="h__oncols";
+                $fkhist="historia_id";
+            }
+            else{
+                $table="h__no__oncols";
+                $fkhist="historiano_id";
+            }
+
+            if($nhistoria!="")
+            {            
+                $historia=DB::table($table)->where('num_h','=',$nhistoria)->get()->first();
+                $paciente=DB::table('pacientes')->where('pacientes.'.$fkhist,'=',$historia->id)->get()->first();
+                return view('Historias.MostrarHistoria');
+            }
+            else if($ci!=""){
+                $paciente=DB::table('pacientes')->where('pacientes.ci','=',$ci)->get()->first();
+                if($table=="h__oncols")
+                {
+                $historia=DB::table($table)->where('id','=',$paciente->historia_id)->get()->first();
+                }
+                else if($table=="h__no__oncols")
+                {
+                $historia=DB::table($table)->where('id','=',$paciente->historiano_id)->get()->first();   
+                }
+                return view('Historias.MostrarHistoria');
+            }
+            else if(($nombre1!="")&&($apellido1!=""))
+            {
+                if(($nombre2=="")&&($apellido2==""))
+                {
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1');
+                }
+                else if(($nombre2!="")&&($apellido2!=""))
+                {
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.nombre2','=',$nombre2)->where('pacientes.apellido2','=',$apellido2);
+                }
+                else if($nombre2!=""){
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.nombre2','=',$nombre2);
+                }
+                else if($apellido2!=""){
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.apellido2','=',$apellido2);
+                }
+            }
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['errorshow' => 'Hay campos vacíos necesarios']);;
+        }
     }
 
     /**
@@ -151,7 +211,7 @@ class HistoriaController extends Controller
      */
     public function show($id)
     {
-        //
+        return view();
     }
 
     /**

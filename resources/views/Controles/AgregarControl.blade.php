@@ -8,6 +8,8 @@
 @endsection
 
 @section('title')
+<form class="form-group" method="POST" action="new_control">
+    @csrf
 <h2 class="font-bold">Agregar Nuevo Control</h2>
 <div class="row">
     <button class="btn btn-primary pull-right" type="submit">Agregar Historia</button>
@@ -95,6 +97,82 @@
                             </div>
                         </div>
                     </div>
+                        <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-2">
+                            <label class="font-noraml">Biomicroscopia:</label>
+                            </div>
+                            <div class="col-sm-1">
+                            <label class="font-noraml">OD:</label>
+                            </div>
+                            <div class="col-sm-4">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="biood">   
+                            </textarea>
+                            </div>
+                            <div class="col-sm-1">
+                            <label class="font-noraml">OI:</label>
+                            </div>
+                            <div class="col-sm-4">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="biooi">   
+                            </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-2">
+                            <label class="font-noraml">Balance Muscular:</label>
+                            </div>
+                            <div class="col-sm-8">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="balmus">   
+                            </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-1">
+                            <label class="font-noraml">Pio:</label>
+                            </div>
+                            <div class="col-sm-2">
+                            <input type="text" class="form-control" name="piood" placeholder="OD">
+                            </div>
+                            <div class="col-sm-2">
+                            <input type="text" class="form-control" name="piooi" placeholder="OI">
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-2">
+                            <label class="font-noraml">Fondo de ojo:</label>
+                            </div>
+                            <div class="col-sm-4">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="fonojo">   
+                            </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-1">
+                            <label class="font-noraml">Diagnostico:</label>
+                            </div>
+                            <div class="col-sm-4">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="diag">
+                            </textarea>
+                            </div>
+                            <div class="col-sm-1">
+                            <label class="font-noraml">Plan:</label>
+                            </div>
+                            <div class="col-sm-4">
+                            <textarea class="form-control" style="resize:none;" rows="2" name="plan">   
+                            </textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,10 +181,6 @@
 @endsection
 @section('mainscript')
 <script src="js/plugins/iCheck/icheck.min.js"></script>
-
-
-       <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
 
    <!-- Data picker -->
    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -126,3 +200,4 @@
 
     </script>
 @endsection
+</form>

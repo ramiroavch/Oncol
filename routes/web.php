@@ -29,5 +29,7 @@ Route::get('/AgregarControlNo','RedirectionsController@AgregarControlNo')->name(
 
 Route::get('/BuscarControl','RedirectionsController@BuscarControl')->name('BuscarControl');
 
-Route::resource('new_oncol','HistoriaController');
+Route::resource('VerHistoria','HistoriaController');
+
+Route::resource('new_control','ControlController');
  
