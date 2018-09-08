@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\ControL;
-use App\Http\Requests\StoreControlRequest;
 use resources\views;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 
-class ControlController extends Controller
+class ListaControlController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,11 +20,26 @@ class ControlController extends Controller
         $historiano=Input::get('historiano');
         if($historia=='NULL')
         {
-            return view('Controles.AgregarControl',['historia'=>'NULL','historiano'=>$historiano]);
+            $query = DB::table('h__no__oncols')->where('num_h','=',$historiano)->get()->first();
+            $exist=DB::table('controls')->where('historiano_id','=',$query->id)->exists();
+            $controls=DB::table('controls')->where('historiano_id','=',$query->id)->get();
+            $aux=$historia;
         }
         else
         {
-            return view('Controles.AgregarControl',['historia'=>$historia,'historiano'=>'NULL']);
+            $query = DB::table('h__oncols')->where('num_h','=',$historia)->get()->first();
+            $exist=DB::table('controls')->where('historia_id','=',$query->id)->exists();
+            $controls=DB::table('controls')->where('historia_id','=',$query->id)->get();
+            $aux=$historiano;
+        }
+
+        if ($exist==true)
+        {
+            return view('Controles.MostrarListado',['controls'=>$controls]);  
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['errorshow' => 'No se encontró ningun control']);
         }
     }
 
@@ -48,35 +61,7 @@ class ControlController extends Controller
      */
     public function store(Request $request)
     {
-        $control=new ControL();
-        if($request->input('oncologico')==false)
-        {
-            $query = DB::table('h__no__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
-            $control->historiano_id=$query->id;
-        }
-        else
-        {
-            $query = DB::table('h__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
-            $control->historia_id=$query->id;
-        }
-        $control->num_control=$request->input('ncontrol');
-        $fecha = $request->input('fecha');
-        $newDate = date("Y-m-d", strtotime($fecha));
-        $control->fecha=$newDate;
-        $control->avod=$request->input('avod');
-        $control->avid=$request->input('avid');
-        $control->anexod=$request->input('anexod');
-        $control->anexid=$request->input('anexid');
-        $control->biood=$request->input('biood');
-        $control->biooi=$request->input('biooi');
-        $control->balmus=$request->input('balmus');
-        $control->piood=$request->input('piood');
-        $control->piooi=$request->input('piooi');
-        $control->fonojo=$request->input('fonojo');
-        $control->diag=$request->input('diag');
-        $control->plan=$request->input('plan');
-        $control->save();
-        Return(view('Controles.MostrarControl',['control'=>$control,'nhistoria'=>$request->input('historia')]));
+        //
     }
 
     /**
@@ -87,7 +72,15 @@ class ControlController extends Controller
      */
     public function show($id)
     {
-        //
+        $control=DB::table('controls')->where('num_control','=',$id)->get()->first();
+        if($control->historia_id==NULL)
+        {
+            return(view('Controles.MostrarControl',['control'=>$control,'nhistoria'=>$id]));
+        }
+        else
+        {
+            return(view('Controles.MostrarControl',['control'=>$control,'nhistoria'=>$id]));
+        }
     }
 
     /**

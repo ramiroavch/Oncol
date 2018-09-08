@@ -15,6 +15,8 @@ class CreateControlsTable extends Migration
     {
         Schema::create('controls', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('num_control');
+            $table->date('fecha');
             $table->string('avod',10)->nullable();
             $table->string('avid',10)->nullable();
             $table->string('anexod',10)->nullable();
@@ -29,6 +31,8 @@ class CreateControlsTable extends Migration
             $table->string('plan',500)->nullable();
             $table->integer('historia_id')->unsigned()->nullable();
             $table->foreign('historia_id')->references('id')->on('h__oncols');
+            $table->integer('historiano_id')->unsigned()->nullable();
+            $table->foreign('historiano_id')->references('id')->on('h__no__oncols');
             $table->timestamps();
         });
     }

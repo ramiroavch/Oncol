@@ -25,7 +25,7 @@ class HistoriaController extends Controller
             $nombre1=trim($request->get('nombre1'));
             $apellido1=trim($request->get('apellido1'));
             $nombre2=trim($request->get('nombre2'));
-            $apellido1=trim($request->get('apellido2'));
+            $apellido2=trim($request->get('apellido2'));
             $oncol=trim($request->get('oncologico'));
             $table;
             $fkhist;
@@ -41,42 +41,76 @@ class HistoriaController extends Controller
             if($nhistoria!="")
             {            
                 $historia=DB::table($table)->where('num_h','=',$nhistoria)->get()->first();
-                $paciente=DB::table('pacientes')->where('pacientes.'.$fkhist,'=',$historia->id)->get()->first();
-                return view('Historias.MostrarHistoria');
+                $exist=DB::table($table)->where('num_h','=',$nhistoria)->exists();
+                if ($exist==true)
+                {
+                    $paciente=DB::table('pacientes')->where('pacientes.'.$fkhist,'=',$historia->id)->get()->first();
+                    $exist2=DB::table('retinoblastomas')->where('historia_id','=',$historia->id)->exists();
+                    return view('Historias.MostrarHistoria',['historia'=>$historia,'paciente'=>$paciente,'retino'=>$exist2]);
+                }
+                else
+                {
+                    return redirect()->back()->withErrors(['errorshow' => 'No se encontró ninguna historia']);
+                }
             }
             else if($ci!=""){
                 $paciente=DB::table('pacientes')->where('pacientes.ci','=',$ci)->get()->first();
-                if($table=="h__oncols")
+                $exist=DB::table('pacientes')->where('pacientes.ci','=',$ci)->exists();
+                if($exist==true)
                 {
-                $historia=DB::table($table)->where('id','=',$paciente->historia_id)->get()->first();
+                    if($table=="h__oncols")
+                    {
+                        $historia=DB::table($table)->where('id','=',$paciente->historia_id)->get()->first();
+                        $exist=DB::table($table)->where('id','=',$paciente->historia_id)->exists();
+                    }
+                    else if($table=="h__no__oncols")
+                    {
+                        $historia=DB::table($table)->where('id','=',$paciente->historiano_id)->get()->first();   
+                        $exist=DB::table($table)->where('id','=',$paciente->historiano_id)->exists();
+                    }
+                    $exist2=DB::table('retinoblastomas')->where('historia_id','=',$historia->id)->exists();
+                    return view('Historias.MostrarHistoria',['historia'=>$historia,'paciente'=>$paciente,'retino'=>$exist2]);
                 }
-                else if($table=="h__no__oncols")
+                else
                 {
-                $historia=DB::table($table)->where('id','=',$paciente->historiano_id)->get()->first();   
+                    return redirect()->back()->withErrors(['errorshow' => 'No se encontró ningun paciente']);
                 }
-                return view('Historias.MostrarHistoria');
             }
             else if(($nombre1!="")&&($apellido1!=""))
             {
                 if(($nombre2=="")&&($apellido2==""))
                 {
-                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1');
+                    $bool=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->exists();
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->get();
                 }
                 else if(($nombre2!="")&&($apellido2!=""))
                 {
-                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.nombre2','=',$nombre2)->where('pacientes.apellido2','=',$apellido2);
+                    $bool=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.nombre2','=',$nombre2)->where('pacientes.apellido2','=',$apellido2)->exist();
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.nombre2','=',$nombre2)->where('pacientes.apellido2','=',$apellido2)->get();
                 }
-                else if($nombre2!=""){
-                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.nombre2','=',$nombre2);
+                else if($nombre2!="")
+                {
+                    $bool=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.nombre2','=',$nombre2)->exist();
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.nombre2','=',$nombre2)->get();
                 }
                 else if($apellido2!=""){
-                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=','apellido1')->where('pacientes.apellido2','=',$apellido2);
+                    $bool=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.apellido2','=',$apellido2)->exist();
+                    $paciente=DB::table('pacientes')->where('pacientes.nombre1','=',$nombre1)->where('pacientes.apellido1','=',$apellido1)->where('pacientes.apellido2','=',$apellido2)->get();
                 }
+                if($bool==true)
+                {
+                return view('Historias.MostrarListado',['pacientes'=>$paciente]);  
+                }
+                else
+                {
+                    return redirect()->back()->withErrors(['errorshow' => 'No se encontró ningun paciente']);
+                }
+                
             }
         }
         else
         {
-            return redirect()->back()->withErrors(['errorshow' => 'Hay campos vacíos necesarios']);;
+            return redirect()->back()->withErrors(['errorshow' => 'Hay campos vacíos necesarios']);
         }
     }
 
@@ -132,13 +166,6 @@ class HistoriaController extends Controller
         }else{
             $historia->emb_cont = 0;
         }
-
-        if ($request->input('parto')==true)
-        {
-        $historia->emb_parto = 1;
-        }else{
-            $historia->emb_parto = 0;
-        }
         if ($request->input('cesar')==true)
         {
         $historia->emb_cesar = 1;
@@ -166,7 +193,7 @@ class HistoriaController extends Controller
         $historia->pio_oi = $request->input('pioi');
 
 
-        if($request->hasFile('fonojo')){
+        /*if($request->hasFile('fonojo')){
             $file=$request->file('fonojo');
             $name=time().$file->getClientOriginalName();
             $file->move(public_path().'/images/', $name);
@@ -174,9 +201,9 @@ class HistoriaController extends Controller
         else
         {
             $name=null;
-        }
+        }*/
 
-        $historia->fondo_ojo = $name;
+        $historia->fondo_ojo = $request->input('fondo_ojo');
 
         $historia->diagnostico = $request->input('diagnos');
         $historia->plan = $request->input('plan');
@@ -195,9 +222,9 @@ class HistoriaController extends Controller
         $newDate = date("Y-m-d", strtotime($fecha));
         $paciente->fecha_nac = $newDate;
 
-        $paciente->Procedencia = $request->input('procedencia');
-        $paciente->Referencia = $request->input('referencia');
-        $paciente->Lic = $request->input('lic');
+        $paciente->procedencia = $request->input('procedencia');
+        $paciente->referencia = $request->input('referencia');
+        $paciente->lic = $request->input('lic');
         $paciente->historia_id=$historia->id;
         $paciente->save();
         return view('home');
@@ -211,7 +238,19 @@ class HistoriaController extends Controller
      */
     public function show($id)
     {
-        return view();
+        $paciente= Paciente::find($id);
+        $nhistoria=$paciente->historia_id;
+        $nhistoriano=$paciente->historiano_id;
+        if($nhistoria!=NULL)
+        {
+            $historia=DB::table('h__oncols')->where('id','=',$nhistoria)->get()->first();
+        }
+        else
+        {
+            $historia=DB::table('h__no__oncols')->where('id','=',$nhistoriano)->get()->first();
+        }
+        $exist=DB::table('retinoblastomas')->where('historia_id','=',$historia->id)->exists();
+        return view('Historias.MostrarHistoria',['paciente'=>$paciente,'historia'=>$historia,'retino'=>$exist]);
     }
 
     /**
@@ -222,7 +261,17 @@ class HistoriaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $historia=DB::table('h__oncols')->where('num_h','=',$id)->get()->first();
+        $exist=DB::table('h__oncols')->where('num_h','=',$id)->exists();
+        if($exist==true)
+        {
+            $paciente=DB::table('pacientes')->where('historia_id','=',$historia->)->get()->first();
+            return(view('Historias.ModificarHistoria',['historia'=>$historia,'$paciente'=>$paciente]));
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['errorshow' => 'No se encontró la historia a modificar']);
+        }
     }
 
     /**

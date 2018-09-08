@@ -39,7 +39,6 @@ class CreateHOncolsTable extends Migration
             $table->string('antec_hermanos',255)->nullable();
             $table->integer('N_emb')->nullable();
             $table->smallInteger('emb_cont')->nullable();
-            $table->smallInteger('emb_parto')->nullable();
             $table->smallInteger('emb_cesar')->nullable();
             $table->string('peso_nac',5)->nullable();
             $table->string('talla_nac',5)->nullable();

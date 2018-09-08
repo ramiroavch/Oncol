@@ -8,7 +8,7 @@
 @endsection
 
 @section('title')
-<form class="form-group" method="GET" action="VerHistoria" enctype="multipart/form-data">
+<form class="form-group" method="GET" action="VerHistoria">
  @csrf
 <h2 class="font-bold">Buscar Historia</h2>
 @if ($errors->any())

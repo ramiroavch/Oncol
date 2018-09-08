@@ -1,16 +1,19 @@
 @extends('layouts.app2')
 
 @section('includes')
-     <link href="{{ asset('css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}" rel="stylesheet">
-     <link href="{{ asset('css/plugins/iCheck/custom.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 @endsection
 
 @section('title')
-<div class="row">
+<form class="form-group" method="POST" action="VerHistoria" enctype="multipart/form-data">
+    @csrf
 <h2 class="font-bold">Agregar Nueva Historia</h2>
-</div>
-<div class="row">
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -20,54 +23,20 @@
         </ul>
     </div>
 @endif
-</div>
 <div class="row">
-    <div class="form-group">
-        <div class="col-sm-2 pull-right">
-            @if($paciente->historia_id==NULL)
-                <a class="btn btn-primary " href="{{ route('AgregarControl.index',['historia'=>'NULL','historiano'=>$historia->num_h]) }}">Agregar Control</a>
-            @else
-                <a class="btn btn-primary pull-right" href="{{ route('AgregarControl.index',['historia'=>$historia->num_h,'historiano'=>'NULL'])}}">Agregar Control</a>
-            @endif
-        </div>
-        <div class="col-sm-2 pull-right">
-            <a class="btn btn-primary pull-right" href="{{ route('ListaControles.index',['historia'=>$historia->num_h,'historiano'=>'NULL'])}}">Ver Controles</a>
-        </div>
-        @if($paciente->historia_id!=NULL)
-            @if($retino==NULL)
-                <div class="col-sm-2 pull-right">
-                    <a class="btn btn-primary pull-right" href="{{ route('AgregarRetino.index',['historia'=>$historia->num_h])}}">Llenar Retinoblastoma</a>
-                </div>
-            @else
-                <div class="col-sm-2 pull-right">
-                    <a class="btn btn-primary pull-right" href="{{ route('AgregarRetino.show',['historia'=>$historia->num_h])}}">Ver Retinoblastoma</a>
-                </div>
-            @endif
-        @endif
-        <div class="col-sm-2 pull-right">
-        @if($paciente->historia_id==NULL)
-        {
-            <a class="btn btn-primary " href="{{ route('HistoriaNo.edit',['historiano'=>$historia->num_h]) }}">Modificar Historia</a>
-        }
-        @else
-        {
-            <a class="btn btn-primary " href="{{ route('VerHistoria.edit',['historian'=>$historia->num_h]) }}">Modificar Historia</a>
-        }
-        @enif
-        </div>
-    </div>
+    <button class="btn btn-primary pull-right" type="submit">Agregar Historia</button>
 </div>
 @endsection
 
 @section('Menu')
-<li class="">
+<li class="active">
     <a href=""><i class="fa fa-edit"></i><span class="nav-label">Historias</span><span class="fa arrow">
     </span></a>
     <ul class="nav nav-second-level">
         <li class="">
             <a href="/home">Buscar Historia</a>
         </li>
-        <li class="">
+        <li class="active">
             <a>
                 <span class="nav-label">Agregar Historia
                 </span>
@@ -75,7 +44,7 @@
                 </span>
             </a>
             <ul class="nav nav-third-level">
-                <li class="">
+                <li class="active">
                     <a href="/AgregarHistoria">Oncológico</a>
                 </li>
                 <li>
@@ -121,38 +90,45 @@
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">
-                        <label>C.I: {{ $paciente->ci }}</label>
+                        <input type="text" class="form-control input-sm" name="cedula" placeholder="C.I" value="{{$paciente->ci}}">	
                     </div> 
                     <div class="form-group">
-                        <label>Primer Nombre: {{$paciente->nombre1}}</label>
+                        <input type="text" class="form-control input-sm" name="nombre1" placeholder="Primer Nombre" value="{{$paciente->nombre1}}">	
                     </div>   
                     <div class="form-group">
-                        <label>Segundo Nombre: {{$paciente->nombre2}} </label>
+                        <input type="text" class="form-control input-sm" name="nombre2" placeholder="Segundo Nombre" value="{{$paciente->nombre2}}">
                     </div> 
                     <div class="form-group">
-                        <label>Primer Apellido: {{$paciente->apellido1}}</label>
+                        <input type="text" class="form-control input-sm" name="apellido1" placeholder="Primer Apellido" value="{{$paciente->apellido1}}">
                     </div>
                     <div class="form-group">
-                        <label>Segundo Apellido: {{$paciente->apellido2}}</label>
+                        <input type="text" class="form-control input-sm" name="apellido2" placeholder="Segundo Apellido" value="{{$paciente->apellido2}}">
                     </div>
                     <div class="form-group">
-                        <label>Telefono: {{$paciente->tlf}}</label>
+                        <input type="text" class="form-control input-sm" name="telefono" placeholder="Telefono" value="{{$paciente->tlf}}">
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group" id="data_1">
-                        <label>Fecha Nacimiento: {{$paciente->fecha_nac}}</label>
+                                <label class="font-noraml">Fecha Nacimiento</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="fecha_nac" class="form-control" value="{{$paciente->fecha_nac}}">
+                                </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label>Procedencia: {{$paciente->procedencia}}</label>
+                        <label class="font-noraml">Procedencia</label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="procedencia">{{$paciente->procedencia}}   
+                        </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label>Referencia: {{$paciente->referencia}}</label>
+                        <label class="font-noraml">Referencia</label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="referencia">{{$paciente->referencia}}
+                        </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label>Lic: {{$paciente->Lic}}</label>
+                        <input type="text" class="form-control input-sm" name="lic" placeholder="LIC" value="{{$paciente->Lic}}">
                     </div>
                 </div>
             </div>
@@ -164,20 +140,17 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Donde consulto al tener los signos:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="3" name="lugarsignos">{{$historia->lugar_sign}}
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="3" name="lugarsignos">{{$historia->lugar_sign}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Que le dijeron:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="3" name="descripsignos">{{$historia->desc_sign}}  
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="3" name="descripsignos">{{$historia->desc_sign}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Tratamiento que recibió:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="3" name="tratsignos">{{$historia->trat_sign}}   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="3" name="tratsignos">{{$historia->trat_sign}}</textarea>
                     </div>
                 </div>
             </div>
@@ -188,16 +161,16 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Fondo de ojo:</label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="fondo_ojo">{{$historia->fondo_ojo}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Diagnostico:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="diagnos">{{$historia->diagnostico}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="diagnos">{{$historia->diagnostico}}</textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">Plan:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="plan">{{$historia->plan}}   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="plan">{{$historia->plan}}</textarea>
                     </div>
                 </div>
             </div>
@@ -213,63 +186,62 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-4">
-                           <label>Edad: {{$historia->leucoria_edad}}</label>
+                            <input type="text" class="form-control" name="edadleuco" placeholder="Edad" value="{{$historia->leucoria_edad}}">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label>OD: {{$historia->leu_od}}</label>
+                                <input type="text" class="form-control" name="leuOD" placeholder="OD" value="{{$historia->leu_od}}">
                             </div>
                             <div class="form-group col-sm-6">
-                                <label>OI: {{$historia->leu_oi}}</label>
+                                <input type="text" class="form-control" name="leuOI" placeholder="OI" value="{{$historia->leu_oi}}">
                             </div>
                         </div>
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="font-noraml">Estrabismo:</label>
-                            <label>Edad: {{$historia->estrabismo_edad}}</label>
+                            <input type="text" class="form-control input-sm" name="estraedad" placeholder="Edad" value="{{$historia->estrabismo_edad}}"> 
                         </div> 
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label>OD: {{$historia->estra_od}}</label>
+                                <input type="text" class="form-control" name="estraOD" placeholder="OD" value="{{$historia->estra_od}}">
                             </div>
                             <div class="form-group col-sm-6">
-                                <label>OI: {{$historia->estra_oi}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label>ET: {{$historia->estra_et}}</label>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label>XT: {{$historia->estra_xt}}</label>
+                                <input type="text" class="form-control" name="estraOI" placeholder="OI" value="{{$historia->estra_oi}}">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label>HT: {{$historia->estra_ht}}</label>
+                                <input type="text" class="form-control" name="estraET" placeholder="ET" value="{{$historia->estra_et}}">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <input type="text" class="form-control" name="estraXT" placeholder="XT" value="{{$historia->estra_xt}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <input type="text" class="form-control" name="estraHT" placeholder="HT" value="{{$historia->estra_ht}}">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="font-noraml">Celulitis:</label>
-                            <label>Edad: {{$historia->celulitis_edad}}</label> 
+                            <input type="text" class="form-control input-sm" name="celedad" placeholder="Edad" value="{{$historia->celulitis_edad}}">
                         </div> 
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <label>OD: {{$historia->cel_od}}</label>
+                                <input type="text" class="form-control" name="celOD" placeholder="OD" value="{{$historia->cel_od}}">
                             </div>
                             <div class="form-group col-sm-6">
-                                <label>OI: {{$historia->cel_oi}}</label>
+                                <input type="text" class="form-control" name="celOI" placeholder="OI" value="{{$historia->cel_oi}}">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="font-noraml">Otro:</label>
-                            <textarea readonly class="form-control" style="resize:none;" rows="3" name="otro">{{$historia->otro}}   
-                            </textarea>
+                            <textarea class="form-control" style="resize:none;" rows="3" name="otro">{{$historia->otro}}</textarea>
                         </div>
                 </div>
             </div>
@@ -280,18 +252,17 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Madre:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="antemadre">{{$historia->antec_madre}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antemadre">{{$historia->antec_madre}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Padre:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="antepadre">{{$historia->antec_padre}}  
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antepadre">{{$historia->antec_padre}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Hermanos:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="anteherm">{{$historia->antec_hermanos}}   
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anteherm">   
                         </textarea>
                     </div>
                 </div>
@@ -303,7 +274,7 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Balance Muscular:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="balmus">{{$historia->bal_musc}}
+                        <textarea class="form-control" style="resize:none;" rows="2" name="balmus">   
                         </textarea>
                     </div>
                      <div class="hr-line-dashed"></div>
@@ -312,10 +283,10 @@
                             <label class="font-noraml">PIO:</label>
                         </div>
                         <div class="form-group col-sm-4">
-                            <label>OD: {{$historia->pio_od}}</label>
+                            <input type="text" class="form-control" name="piod" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-4">
-                            <label>OI: {{$historia->pio_oi}}</label>
+                            <input type="text" class="form-control" name="pioi" placeholder="OI">
                         </div>
                     </div>
                 </div>
@@ -329,38 +300,28 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label>N° embarazo: {{$historia->N_emb}}</label>
+                            <input type="text" class="form-control" name="nembarazo" placeholder="N° Embarazo">
                         </div>
                     </div>
-                    <div class="form-group">
-                        @if($historia->emb_cont ==1)
-                        <label> <input disabled="disabled" type="checkbox" name="control" value="false">controlado</label>
-                        @else
-                        <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">controlado</label>
-                        @endif
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label>Peso: {{$historia->peso_nac}}</label>
+                        <div class="form-group">
+                            <input type="hidden" name="control" value="false">
+                            <label> <input type="checkbox" name="control" value="true">controlado</label>
                         </div>
-                        <div class="form-group col-sm-6">
-                            <label>Talla: {{$historia->talla_nac}}</label>
+                        <div class="hr-line-dashed"></div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <input type="text" class="form-control" name="pesonac" placeholder="Peso">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <input type="text" class="form-control" name="tallanac" placeholder="Talla">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @if($historia->emb_cesar ==1)
-                            <label> <input disabled="disabled" type="checkbox" name="control" value="false">Cesárea</label>
-                        @else
-                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">Cesárea</label>
-                        @endif
-
-                        @if($historia->nac_comp ==1)
-                            <label> <input disabled="disabled" type="checkbox" name="control" value="false">Complicaciones</label>
-                        @else
-                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">Complicaciones</label>
-                        @endif
-                    </div>
+                        <div class="form-group">
+                            <input type="hidden" name="cesar" value="false">
+                            <label> <input type="checkbox" name="cesar" value="true">Cesárea</label>
+                            <input type="hidden" name="complic" value="false">
+                            <label> <input type="checkbox" name="complic" value="true">Complicación</label> 
+                        </div>   
                 </div>
             </div>
             <div class="ibox float-e-margins">
@@ -370,13 +331,13 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Médicos:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="antmedicos">{{$historia->antec_med}}
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antmedicos">   
                         </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Quirúrgicos:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="antquirur">{{$historia->antec_quirur}}  
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antquirur">   
                         </textarea>
                     </div>
                 </div>
@@ -387,11 +348,14 @@
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">
-                        <label>N° Historia: {{$historia->num_h}}</label>
+                        <input type="text" class="form-control" name="nhistoria" placeholder="N° Historia">
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label>Fecha: {{$historia->fecha}}</label>
+                        <label class="font-noraml">Fecha:</label>
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="datehist" class="form-control" value="03/04/2014">
+                        </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="row">
@@ -399,10 +363,10 @@
                             <label class="font-noraml">AV:</label>
                         </div>
                         <div class="form-group col-sm-4">
-                            <label>OD: {{$historia->av_od}}</label>
+                            <input type="text" class="form-control" name="avod" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-4">
-                            <label>OI: {{$historia->av_oi}}</label>
+                            <input type="text" class="form-control" name="avoi" placeholder="OI">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -411,11 +375,13 @@
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OD:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="anexod">{{$historia->anex_od}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anexod">   
+                        </textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OI:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="anexoi">{{$historia->anex_oi}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anexoi">   
+                        </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -423,39 +389,43 @@
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OD:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="biood">{{$historia->bio_od}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="biood">   
+                        </textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OI:</label>
-                        <textarea readonly class="form-control" style="resize:none;" rows="2" name="biooi">{{$historia->bio_oi}}</textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="biooi">   
+                        </textarea>
                     </div>
                 </div>
             </div>
         </div>
 	</div>
 </div>
+</form>
 @endsection
 
 @section('mainscript')
 
+<script src="js/plugins/iCheck/icheck.min.js"></script>
 
-    <!-- Custom and plugin javascript -->
-    <script type="text/javascript" src="{{ asset('js/inspinia.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-
-    <!-- Chosen -->
-    <script type="text/javascript" src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
-
-   <!-- JSKnob -->
-   <script type="text/javascript" src="{{ asset('js/plugins/jsKnob/jquery.knob.js') }}"></script>
-
-   <!-- Input Mask-->
-   <script type="text/javascript" src="{{ asset('js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
 
    <!-- Data picker -->
-   <script type="text/javascript" src="{{ asset('js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+   <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
 
-    <!-- Image cropper -->
-    <script type="text/javascript" src="{{ asset('js/plugins/cropper/cropper.min.js') }}"></script>
+
+    <script>
+
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+
+
+    </script>
 @endsection
+</form>

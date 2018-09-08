@@ -23,8 +23,8 @@ class CreatePacientesTable extends Migration
             $table->string('apellido2')->nullable();
             $table->mediumInteger('tlf')->nullable();
             $table->date('fecha_nac');
-            $table->string('Procedencia')->nullable();
-            $table->string('Referencia')->nullable();
+            $table->string('procedencia')->nullable();
+            $table->string('referencia')->nullable();
             $table->string('Lic')->nullable();
             $table->integer('historia_id')->unsigned()->nullable();
             $table->foreign('historia_id')->references('id')->on('h__oncols');

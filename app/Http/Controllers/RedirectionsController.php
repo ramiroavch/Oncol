@@ -25,6 +25,9 @@ class RedirectionsController extends Controller
 	}
 	public function BuscarControl(){
 		return view('Controles.BuscarControl');
+	}
+	public function test(){
+		return view('Historias.MostrarListado');
 	}    
 }
 

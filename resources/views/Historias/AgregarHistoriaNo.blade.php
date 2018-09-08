@@ -10,7 +10,18 @@
 @endsection
 
 @section('title')
+<form class="form-group" method="POST" action="HistoriaNo" enctype="multipart/form-data">
+    @csrf
 <h2 class="font-bold">Agregar Nueva Historia</h2>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+             <li>{{ $error }}</li>
+             @endforeach
+        </ul>
+    </div>
+@endif
 <div class="row">
     <button class="btn btn-primary pull-right" type="submit">Agregar Historia</button>
 </div>
@@ -91,7 +102,7 @@
                         <input type="text" class="form-control input-sm" name="apellido2" placeholder="Segundo Apellido">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control input-sm" name="elf" placeholder="Telefono">
+                        <input type="text" class="form-control input-sm" name=tlf" placeholder="Telefono">
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -140,21 +151,16 @@
                     <h5>Fondo de ojo:</h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label class="font-noraml">OD:</label>
-                            <label class="btn btn-primary">
-                            <input type="file" name="fonojOD" class="hide">
-                                        Cargar Imagen
-                        </label>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label class="font-noraml">OI:</label>
-                            <label class="btn btn-primary">
-                            <input type="file" name="fonojOI" id="inputImage" class="hide">
-                                        Cargar Imagen
-                        </label>
-                        </div>
+                    <div class="form-group">
+                        <label class="font-noraml">OD:</label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="fondo_od">   
+                        </textarea>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="font-noraml">OI:</label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="fondo_oi">   
+                        </textarea>
                     </div>
                 </div>
             </div>
@@ -252,32 +258,30 @@
                     
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="Peso al nacer">
+                            <input type="text" class="form-control" name="peso_nac" placeholder="Peso al nacer">
                         </div>
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="Talla al nacer">
+                            <input type="text" class="form-control" name="talla_nac" placeholder="Talla al nacer">
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6"">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="Semanas">
+                            <input type="text" class="form-control" name="semanas" placeholder="Semanas">
                         </div>
                     </div>
                         <div class="form-group">
-                            <input type="hidden" name="parto" value="false">
-                            <label> <input type="checkbox" name="parto" value="true">Parto</label>
                             <input type="hidden" name="cesar" value="false">
                             <label> <input type="checkbox" name="cesar" value="true">Cesárea</label> 
                         </div> 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="font-noraml">Complicaciones Maternas:</label>
-                            <textarea class="form-control" style="resize:none;" rows="2" name="Leucoria">   
+                            <textarea class="form-control" style="resize:none;" rows="2" name="comp_mat">   
                             </textarea>
                         </div>  
                         <div class="form-group">
                             <label class="font-noraml">Complicaciones al Nacer:</label>
-                            <textarea class="form-control" style="resize:none;" rows="2" name="Leucoria">   
+                            <textarea class="form-control" style="resize:none;" rows="2" name="comp_nac">   
                             </textarea>
                         </div> 
                 </div>
@@ -292,10 +296,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="OD">
+                            <input type="text" class="form-control" name="avsc_od" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-6">
-                        <input type="text" class="form-control" name="Leucoria" placeholder="OI">
+                        <input type="text" class="form-control" name="avsc_oi" placeholder="OI">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -304,15 +308,15 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="OD">
+                            <input type="text" class="form-control" name="avmc_od" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-6">
-                        <input type="text" class="form-control" name="Leucoria" placeholder="OI">
+                        <input type="text" class="form-control" name="avmc_oi" placeholder="OI">
                         </div>
                     </div>
                     <div class="form-group">
                             <label class="font-noraml">Refracción:</label>
-                            <textarea class="form-control" style="resize:none;" rows="2" name="Leucoria">   
+                            <textarea class="form-control" style="resize:none;" rows="2" name="refraccion">   
                             </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -321,10 +325,10 @@
                     </div>
                      <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="OD">
+                            <input type="text" class="form-control" name="anex_od" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-6">
-                        <input type="text" class="form-control" name="Leucoria" placeholder="OI">
+                        <input type="text" class="form-control" name="anex_oi" placeholder="OI">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -333,10 +337,10 @@
                     </div>
                      <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="OD">
+                            <input type="text" class="form-control" name="bio_od" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-6">
-                        <input type="text" class="form-control" name="Leucoria" placeholder="OI">
+                        <input type="text" class="form-control" name="bio_oi" placeholder="OI">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -345,16 +349,16 @@
                     </div>
                      <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="Leucoria" placeholder="OD">
+                            <input type="text" class="form-control" name="pres_od" placeholder="OD">
                         </div>
                         <div class="form-group col-sm-6">
-                        <input type="text" class="form-control" name="Leucoria" placeholder="OI">
+                        <input type="text" class="form-control" name="pres_oi" placeholder="OI">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">Fecha:</label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014" name="fecha">
                         </div>
                     </div>
                 </div>
@@ -365,13 +369,6 @@
 @endsection
 
 @section('mainscript')
-<script src="js/plugins/iCheck/icheck.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('.i-checks').iCheck({
-                    checkboxClass: 'icheckbox_square-green',
-                    radioClass: 'iradio_square-green',
-                });
-            });
-        </script>
+
 @endsection
+</form>

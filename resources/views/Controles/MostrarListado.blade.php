@@ -13,7 +13,7 @@
 @section('title')
 <!--<form class="form-group" method="GET" action="VerHistoria" enctype="multipart/form-data">
  @csrf-->
-<h2 class="font-bold">Busqueda de Pacientes</h2>
+<h2 class="font-bold">Busqueda de Controles</h2>
 <!--@if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -63,31 +63,31 @@
                     <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
                         <thead>
                             <tr>
-                                <th data-toggle="true">Primer Nombre</th>
-                                <th>Segundo Nombre</th>
-                                <th>Primer Apeliido</th>
-                                <th>Segundo Apeliido</th>
-                                <th data-hide="all">Telefono</th>
-                                <th data-hide="all">Fecha Nac</th>
-                                <th data-hide="all">Procedencia</th>
-                                <th data-hide="all">Referencia</th>
-                                <th data-hide="all">Lic</th>
+                                <th data-toggle="true">Numero Control</th>
+                                <th>fecha</th>
+                                <th>AV OD</th>
+                                <th>AV OI</th>
+                                <th>Balance Muscular</th>
+                                <th data-hide="all">Anexo OD</th>
+                                <th data-hide="all">Anexo OI</th>
+                                <th data-hide="all">Bio OD</th>
+                                <th data-hide="all">Bio OI</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($pacientes as $paciente)
+                            @foreach($controls as $control)
                             <tr>
-                                <td>{{ $paciente->nombre1 }}</td>
-                                <td>{{ $paciente->nombre2 }}</td>
-                                <td>{{ $paciente->apellido1 }}</td>
-                                <td>{{ $paciente->apellido2 }}</td>
-                                <td><span class="pie">{{ $paciente->tlf }}</span></td>
-                                <td>{{ $paciente->fecha_nac }}</td>
-                                <td>{{ $paciente->procedencia }}</td>
-                                <td>{{ $paciente->referencia }}</td>
-                                <td>{{ $paciente->Lic }}</td>
-                                <td><a class="btn btn-info" href="{{ route('VerHistoria.show',$paciente->id) }}">Show</a></td>
+                                <td>{{ $control->num_control }}</td>
+                                <td>{{ $control->fecha }}</td>
+                                <td>{{ $control->avod }}</td>
+                                <td>{{ $control->avid }}</td>
+                                <td>{{ $control->balmus }}</td>
+                                <td><span class="pie">{{ $control->anexod }}</span></td>
+                                <td>{{ $control->anexid }}</td>
+                                <td>{{ $control->biood }}</td>
+                                <td>{{ $control->biooi }}</td>
+                                <td><a class="btn btn-info" href="{{ route('ListaControles.show',$control->num_control) }}">Show</a></td>
                             </tr>
                             @endforeach
                         </tbody>

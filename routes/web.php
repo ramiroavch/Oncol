@@ -23,11 +23,20 @@ Route::get('/AgregarHistoria', 'RedirectionsController@AgregarHistoria')->name('
 
 Route::get('/AgregarHistoriaNo', 'RedirectionsController@AgregarHistoriaNo')->name('AgregarHistoriaNo');
 
-Route::get('/AgregarControl','RedirectionsController@AgregarControl')->name('AgregarControl');
-
 Route::get('/AgregarControlNo','RedirectionsController@AgregarControlNo')->name('AgregarControlNo');
 
 Route::get('/BuscarControl','RedirectionsController@BuscarControl')->name('BuscarControl');
+
+
+Route::get('/test','RedirectionsController@test')->name('test');
+
+Route::resource('ListaControles','ListaControlController');
+
+Route::resource('AgregarRetino','RetinoController');
+
+Route::resource('AgregarControl','ControlController');
+
+Route::resource('HistoriaNo','HistoriaNoController');
 
 Route::resource('VerHistoria','HistoriaController');
 

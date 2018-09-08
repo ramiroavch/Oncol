@@ -113,7 +113,7 @@
                                 <div class="input-group date">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="fecha_nac" class="form-control" value="03/04/2014">
                                 </div>
-                            </div>
+                    </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Procedencia</label>
@@ -164,12 +164,8 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Fondo de ojo:</label>
-                    </div>
-                    <div class="form-group">
-                        <label class="btn btn-primary">
-                            <input type="file" name="fonojo" class="hide">
-                                        Cargar Imagen
-                        </label>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="fondo_ojo">   
+                        </textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -330,8 +326,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="parto" value="false">
-                            <label> <input type="checkbox" name="parto" value="true">Parto</label>
                             <input type="hidden" name="cesar" value="false">
                             <label> <input type="checkbox" name="cesar" value="true">Cesárea</label>
                             <input type="hidden" name="complic" value="false">
