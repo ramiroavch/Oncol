@@ -8,26 +8,11 @@
 @endsection
 
 @section('title')
+<form class="form-group" method="POST" action="AgregarControl">
+    @csrf
+<h2 class="font-bold">Agregar Nuevo Control</h2>
 <div class="row">
-<h2 class="font-bold">Ver Control</h2>
-</div>
-<div class="row">
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $error)
-             <li>{{ $error }}</li>
-             @endforeach
-        </ul>
-    </div>
-@endif
-</div>
-<div class="row">
-    <div class="form-group">
-        <div class="col-sm-1 pull-right">
-                <a class="btn btn-primary" href="{{ route('AgregarControl.edit',$control->num_control) }}">Modificar</a>
-        </div>
-    </div>
+    <button class="btn btn-primary pull-right" type="submit">Agregar Control</button>
 </div>
 @endsection
 @section('Menu')
@@ -72,10 +57,14 @@
                             <label class="font-noraml">N°historia:</label>
                             </div>
                             <div class="col-sm-1">
-                                    <input type="text" readonly="readonly" checked="checked" class="form-control" name="historia" value="{{$nhistoria}}">
+                                @if($historia=='NULL')
+                                    <input type="text" readonly="readonly" class="form-control" name="historia" value="{{$historiano}}">
+                                @else
+                                    <input type="text" readonly="readonly" checked="checked" class="form-control" name="historia" value="{{$historia}}">
+                                @endif
                             </div>
                             <div class="col-sm-6">
-                                @if($control->historia_id=='NULL')
+                                @if($historia=='NULL')
                                     <input type="hidden" name="oncologico" value="false">
                                     <label> <input readonly="readonly" type="checkbox" name="oncologico" value="true">Oncológico</label>
                                 @else
@@ -83,40 +72,46 @@
                                     <label> <input readonly="readonly" disabled="disabled" checked="checked" type="checkbox" name="oncologico" value="true">Oncológico</label>
                                 @endif
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-group" id="data_1">
-                                    <label class="font-noraml">Fecha: {{$control->fecha}}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-1">
-                            <label class="font-noraml">N° Control:</label>
-                            </div>
-                            <div class="col-sm-1">
-                                    <input type="text" readonly="readonly" checked="checked" class="form-control" name="ncontrol" value="{{$control->num_control}}">
-                            </div>
                         </div>
                     </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <input type="text" class="form-control" name="ncontrol" placeholder="N° Control">    
+                            </div>
+                            <div class="col-sm-2">
+                                
+                            </div>
+                            <div class="col-sm-1">
+                                <label class="font-noraml">Fecha</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group" id="data_1">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="fecha" class="form-control" value="03/04/2014">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-1">
                             <label class="font-noraml">AV:</label>
                             </div>
                             <div class="col-sm-2">
-                            <label> OD: {{$control->avod}}</label>
+                            <input type="text" class="form-control" name="avod" placeholder="OD">
                             </div>
                             <div class="col-sm-2">
-                            <label> OI: {{$control->avid}}</label>
+                            <input type="text" class="form-control" name="avid" placeholder="OI">
                             </div>
                             <div class="col-sm-1">
                             <label class="font-noraml">Anexos:</label>
                             </div>
                             <div class="col-sm-2">
-                            <label> OD: {{$control->anexod}}</label>
+                            <input type="text" class="form-control" name="anexod" placeholder="OD">
                             </div>
                             <div class="col-sm-2">
-                            <label> ID: {{$control->anexid}}</label>
+                            <input type="text" class="form-control" name="anexid" placeholder="OI">
                             </div>
                         </div>
                     </div>
@@ -124,19 +119,21 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-2">
-                                <label class="font-noraml">Biomicroscopia:</label>
+                            <label class="font-noraml">Biomicroscopia:</label>
                             </div>
                             <div class="col-sm-1">
-                                <label class="font-noraml">OD:</label>
+                            <label class="font-noraml">OD:</label>
                             </div>
                             <div class="col-sm-4">
-                                <textarea readonly class="form-control" style="resize:none;" rows="2" name="biood">{{$control->biood}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="biood">   
+                            </textarea>
                             </div>
                             <div class="col-sm-1">
-                                <label class="font-noraml">OI:</label>
+                            <label class="font-noraml">OI:</label>
                             </div>
                             <div class="col-sm-4">
-                                <textarea readonly class="form-control" style="resize:none;" rows="2" name="biooi">{{$control->biooi}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="biooi">   
+                            </textarea>
                             </div>
                         </div>
                     </div>
@@ -144,10 +141,11 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-2">
-                                <label class="font-noraml">Balance Muscular:</label>
+                            <label class="font-noraml">Balance Muscular:</label>
                             </div>
                             <div class="col-sm-8">
-                                <textarea readonly class="form-control" style="resize:none;" rows="2" name="balmus">{{$control->balmus}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="balmus">   
+                            </textarea>
                             </div>
                         </div>
                     </div>
@@ -155,21 +153,22 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-1">
-                                <label class="font-noraml">Pio:</label>
+                            <label class="font-noraml">Pio:</label>
                             </div>
                             <div class="col-sm-2">
-                                <label>OD: {{$control->piood}}</label>
+                            <input type="text" class="form-control" name="piood" placeholder="OD">
                             </div>
                             <div class="col-sm-2">
-                                <label>OD: {{$control->piooi}}</label>
+                            <input type="text" class="form-control" name="piooi" placeholder="OI">
                             </div>
                             <div class="col-sm-1">
                             </div>
                             <div class="col-sm-2">
-                                <label class="font-noraml">Fondo de ojo:</label>
+                            <label class="font-noraml">Fondo de ojo:</label>
                             </div>
                             <div class="col-sm-4">
-                                <textarea readonly="" class="form-control" style="resize:none;" rows="2" name="fonojo">{{$control->fonojo}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="fonojo">   
+                            </textarea>
                             </div>
                         </div>
                     </div>
@@ -180,13 +179,15 @@
                             <label class="font-noraml">Diagnostico:</label>
                             </div>
                             <div class="col-sm-4">
-                            <textarea readonly class="form-control" style="resize:none;" rows="2" name="diag">{{$control->diag}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="diag">
+                            </textarea>
                             </div>
                             <div class="col-sm-1">
                             <label class="font-noraml">Plan:</label>
                             </div>
                             <div class="col-sm-4">
-                            <textarea readonly class="form-control" style="resize:none;" rows="2" name="plan">{{$control->plan}}</textarea>
+                            <textarea class="form-control" style="resize:none;" rows="2" name="plan">   
+                            </textarea>
                             </div>
                         </div>
                     </div>
@@ -197,5 +198,24 @@
 </div>
 @endsection
 @section('mainscript')
+<script src="js/plugins/iCheck/icheck.min.js"></script>
 
+   <!-- Data picker -->
+   <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+
+    <script>
+
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+
+
+    </script>
 @endsection
+</form>

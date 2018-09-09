@@ -132,102 +132,112 @@ class HistoriaController extends Controller
      */
     public function store(StoreHistoriaRequest $request)
     {
-
-        $historia = new H_Oncol();
-        $historia->num_h = $request->input('nhistoria');
-        $fecha = $request->input('datehist');
-        $newDate = date("Y-m-d", strtotime($fecha));
-        $historia->fecha = $newDate;
-
-        $historia->leucoria_edad = $request->input('edadleuco');
-        $historia->leu_od = $request->input('LeuOD');
-        $historia->leu_oi = $request->input('LeuOI');
-        $historia->estrabismo_edad= $request->input('estraedad');
-        $historia->estra_od = $request->input('estraOD');
-        $historia->estra_oi = $request->input('estraOI');
-        $historia->estra_et = $request->input('estraET');
-        $historia->estra_xt = $request->input('estraXT');
-        $historia->estra_ht = $request->input('estraHT');
-        $historia->celulitis_edad = $request->input('celedad');
-        $historia->cel_od = $request->input('celOD');
-        $historia->cel_oi = $request->input('celOI');
-        $historia->otro = $request->input('otro');
-        $historia->lugar_sign = $request->input('lugarsignos');
-        $historia->desc_sign = $request->input('descripsignos');
-        $historia->trat_sign = $request->input('tratsignos');
-        $historia->antec_madre = $request->input('antemadre');
-        $historia->antec_padre = $request->input('antepadre');
-        $historia->antec_hermanos = $request->input('anteherm');
-        $historia->N_emb = $request->input(' nembarazo');
-
-        if ($request->input('control')==true)
+        $exist=DB::table('h__oncols')->where('num_h','=',$request->input('nhistoria'))->exists();
+        $exist2=DB::table('h__no__oncols')->where('num_h','=',$request->input('nhistoria'))->exists();
+        if($request->input('cedula')!=null)
         {
-        $historia->emb_cont = 1;
-        }else{
+            $exist3=$exist=DB::table('pacientes')->where('ci','=',$request->input('cedula'))->exists();
+        }
+        else
+        if($exist==false && $exist==false && $exist3!=true)
+        {
+            $historia = new H_Oncol();
+            $historia->num_h = $request->input('nhistoria');
+            $fecha = $request->input('datehist');
+            $newDate = date("Y-m-d", strtotime($fecha));
+            $historia->fecha = $newDate;
+            $historia->leucoria_edad = $request->input('edadleuco');
+            $historia->leu_od = $request->input('LeuOD');
+            $historia->leu_oi = $request->input('LeuOI');
+            $historia->estrabismo_edad= $request->input('estraedad');
+            $historia->estra_od = $request->input('estraOD');
+            $historia->estra_oi = $request->input('estraOI');
+            $historia->estra_et = $request->input('estraET');
+            $historia->estra_xt = $request->input('estraXT');
+            $historia->estra_ht = $request->input('estraHT');
+            $historia->celulitis_edad = $request->input('celedad');
+            $historia->cel_od = $request->input('celOD');
+            $historia->cel_oi = $request->input('celOI');
+            $historia->otro = $request->input('otro');
+            $historia->lugar_sign = $request->input('lugarsignos');
+            $historia->desc_sign = $request->input('descripsignos');
+            $historia->trat_sign = $request->input('tratsignos');
+            $historia->antec_madre = $request->input('antemadre');
+            $historia->antec_padre = $request->input('antepadre');
+            $historia->antec_hermanos = $request->input('anteherm');
+            $historia->N_emb = $request->input(' nembarazo');
+
+            if ($request->input('control')=='true')
+            {
             $historia->emb_cont = 0;
-        }
-        if ($request->input('cesar')==true)
-        {
-        $historia->emb_cesar = 1;
-        }else{
+            }else{
+                $historia->emb_cont = 1;
+            }
+            if ($request->input('cesar')=='true')
+            {
             $historia->emb_cesar = 0;
-        }
-        $historia->peso_nac = $request->input('pesonac');
-        $historia->talla_nac = $request->input('tallanac');
-        if ($request->input('complic')==true)
-        {
-        $historia->nac_comp = 1;
-        }else{
+            }else{
+                $historia->emb_cesar = 1;
+            }
+            $historia->peso_nac = $request->input('pesonac');
+            $historia->talla_nac = $request->input('tallanac');
+            if ($request->input('complic')=='true')
+            {
             $historia->nac_comp = 0;
-        }
-        $historia->antec_med = $request->input('antmedicos');
-        $historia->antec_quirur = $request->input('antquirur');
-        $historia->av_od = $request->input('avod');
-        $historia->av_oi = $request->input('avoi');
-        $historia->anex_od = $request->input('anexod');
-        $historia->anex_oi = $request->input('anexoi');
-        $historia->bio_od = $request->input('biood');
-        $historia->bio_oi = $request->input('biooi');
-        $historia->bal_musc = $request->input('balmus');
-        $historia->pio_od = $request->input('piod');
-        $historia->pio_oi = $request->input('pioi');
+            }else{
+                $historia->nac_comp = 1;
+            }
+            $historia->antec_med = $request->input('antmedicos');
+            $historia->antec_quirur = $request->input('antquirur');
+            $historia->av_od = $request->input('avod');
+            $historia->av_oi = $request->input('avoi');
+            $historia->anex_od = $request->input('anexod');
+            $historia->anex_oi = $request->input('anexoi');
+            $historia->bio_od = $request->input('biood');
+            $historia->bio_oi = $request->input('biooi');
+            $historia->bal_musc = $request->input('balmus');
+            $historia->pio_od = $request->input('piod');
+            $historia->pio_oi = $request->input('pioi');
 
 
-        /*if($request->hasFile('fonojo')){
-            $file=$request->file('fonojo');
-            $name=time().$file->getClientOriginalName();
-            $file->move(public_path().'/images/', $name);
+            /*if($request->hasFile('fonojo')){
+                $file=$request->file('fonojo');
+                $name=time().$file->getClientOriginalName();
+                $file->move(public_path().'/images/', $name);
+            }
+            else
+            {
+                $name=null;
+            }*/
+
+            $historia->fondo_ojo = $request->input('fondo_ojo');
+            $historia->diagnostico = $request->input('diagnos');
+            $historia->plan = $request->input('plan');
+            $historia->save();
+
+            $paciente = new Paciente();
+            $paciente->ci =  $request->input('cedula');
+            $paciente->nombre1 = $request->input('nombre1');
+            $paciente->nombre2 = $request->input('nombre2');
+            $paciente->apellido1 = $request->input('apellido1');
+            $paciente->apellido2 = $request->input('apellido2');
+            $paciente->tlf = $request->input('telefono');
+
+            $fecha = $request->input('fecha_nac');
+            $newDate = date("Y-m-d", strtotime($fecha));
+            $paciente->fecha_nac = $newDate;
+
+            $paciente->procedencia = $request->input('procedencia');
+            $paciente->referencia = $request->input('referencia');
+            $paciente->lic = $request->input('lic');
+            $paciente->historia_id=$historia->id;
+            $paciente->save();
+            return view('home');
         }
         else
         {
-            $name=null;
-        }*/
-
-        $historia->fondo_ojo = $request->input('fondo_ojo');
-
-        $historia->diagnostico = $request->input('diagnos');
-        $historia->plan = $request->input('plan');
-        $historia->save();
-
-
-        $paciente = new Paciente();
-        $paciente->ci =  $request->input('cedula');
-        $paciente->nombre1 = $request->input('nombre1');
-        $paciente->nombre2 = $request->input('nombre2');
-        $paciente->apellido1 = $request->input('apellido1');
-        $paciente->apellido2 = $request->input('apellido2');
-        $paciente->tlf = $request->input('telefono');
-
-        $fecha = $request->input('fecha_nac');
-        $newDate = date("Y-m-d", strtotime($fecha));
-        $paciente->fecha_nac = $newDate;
-
-        $paciente->procedencia = $request->input('procedencia');
-        $paciente->referencia = $request->input('referencia');
-        $paciente->lic = $request->input('lic');
-        $paciente->historia_id=$historia->id;
-        $paciente->save();
-        return view('home');
+            return redirect()->back()->withErrors(['errorshow' => 'Ya existe una historia con ese numero']);
+        }
     }
 
     /**
@@ -265,8 +275,8 @@ class HistoriaController extends Controller
         $exist=DB::table('h__oncols')->where('num_h','=',$id)->exists();
         if($exist==true)
         {
-            $paciente=DB::table('pacientes')->where('historia_id','=',$historia->)->get()->first();
-            return(view('Historias.ModificarHistoria',['historia'=>$historia,'$paciente'=>$paciente]));
+            $paciente=DB::table('pacientes')->where('historia_id','=',$historia->id)->get()->first();
+            return(view('Historias.ModificarHistoria',['historia'=>$historia,'paciente'=>$paciente]));
         }
         else
         {
@@ -283,7 +293,111 @@ class HistoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request->all());
+        $historia=DB::table('h__oncols')->where('num_h','=',$id)->get()->first();
+        $new=H_Oncol::findOrFail($historia->id);
+        $paciente=DB::table('pacientes')->where('historia_id','=',$historia->id)->get()->first();
+        $new2=Paciente::findOrFail($paciente->id);
+
+
+        $fecha = $request->input('datehist');
+        $newDate = date("Y-m-d", strtotime($fecha));
+        $new->fecha = $newDate;
+
+        $new->leucoria_edad = $request->input('edadleuco');
+        $new->leu_od = $request->input('LeuOD');
+        $new->leu_oi = $request->input('LeuOI');
+        $new->estrabismo_edad= $request->input('estraedad');
+        $new->estra_od = $request->input('estraOD');
+        $new->estra_oi = $request->input('estraOI');
+        $new->estra_et = $request->input('estraET');
+        $new->estra_xt = $request->input('estraXT');
+        $new->estra_ht = $request->input('estraHT');
+        $new->celulitis_edad = $request->input('celedad');
+        $new->cel_od = $request->input('celOD');
+        $new->cel_oi = $request->input('celOI');
+        $new->otro = $request->input('otro');
+        $new->lugar_sign = $request->input('lugarsignos');
+        $new->desc_sign = $request->input('descripsignos');
+        $new->trat_sign = $request->input('tratsignos');
+        $new->antec_madre = $request->input('antemadre');
+        $new->antec_padre = $request->input('antepadre');
+        $new->antec_hermanos = $request->input('anteherm');
+        $new->N_emb = $request->input('nembarazo');
+
+        if ($request->input('control')=='true')
+        {
+            $new->emb_cont = 0;
+        }
+        else if($request->input('control')=='false')
+        {
+            $new->emb_cont = 1;
+        }
+        if ($request->input('cesar')=='true')
+        {
+            $new->emb_cesar = 0;
+        }
+        else if ($request->input('cesar')=='false')
+        {
+            $new->emb_cesar = 1;
+        }
+        $new->peso_nac = $request->input('pesonac');
+        $new->talla_nac = $request->input('tallanac');
+        if ($request->input('complic')=='true')
+        {
+            $new->nac_comp = 0;
+        }
+        else if ($request->input('complic')=='false')
+        {
+            $new->nac_comp = 1;
+        }
+        $new->antec_med = $request->input('antmedicos');
+        $new->antec_quirur = $request->input('antquirur');
+        $new->av_od = $request->input('avod');
+        $new->av_oi = $request->input('avoi');
+        $new->anex_od = $request->input('anexod');
+        $new->anex_oi = $request->input('anexoi');
+        $new->bio_od = $request->input('biood');
+        $new->bio_oi = $request->input('biooi');
+        $new->bal_musc = $request->input('balmus');
+        $new->pio_od = $request->input('piod');
+        $new->pio_oi = $request->input('pioi');
+
+
+        /*if($request->hasFile('fonojo')){
+            $file=$request->file('fonojo');
+            $name=time().$file->getClientOriginalName();
+            $file->move(public_path().'/images/', $name);
+        }
+        else
+        {
+            $name=null;
+        }*/
+
+        $new->fondo_ojo = $request->input('fondo_ojo');
+
+        $new->diagnostico = $request->input('diagnos');
+        $new->plan = $request->input('plan');
+        $new->save();
+
+        $new2->ci =  $request->input('cedula');
+        $new2->nombre1 = $request->input('nombre1');
+        $new2->nombre2 = $request->input('nombre2');
+        $new2->apellido1 = $request->input('apellido1');
+        $new2->apellido2 = $request->input('apellido2');
+        $new2->tlf = $request->input('telefono');
+
+        $fecha = $request->input('fecha_nac');
+        $newDate = date("Y-m-d", strtotime($fecha));
+        $new2->fecha_nac = $newDate;
+
+        $new2->procedencia = $request->input('procedencia');
+        $new2->referencia = $request->input('referencia');
+        $new2->lic = $request->input('lic');
+        $new2->save();
+        return redirect()->back();
+
+
     }
 
     /**

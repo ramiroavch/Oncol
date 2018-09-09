@@ -48,35 +48,43 @@ class ControlController extends Controller
      */
     public function store(Request $request)
     {
-        $control=new ControL();
-        if($request->input('oncologico')==false)
+        $exist = DB::table('controls')->where('num_control','=',$request->input('ncontrol'))->exists();
+        if($exist==false)
         {
-            $query = DB::table('h__no__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
-            $control->historiano_id=$query->id;
-        }
+            $control=new ControL();
+            if($request->input('oncologico')==false)
+            {
+                $query = DB::table('h__no__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
+                $control->historiano_id=$query->id;
+            }
+            else
+            {
+                $query = DB::table('h__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
+                $control->historia_id=$query->id;
+            }
+            $control->num_control=$request->input('ncontrol');
+            $fecha = $request->input('fecha');
+            $newDate = date("Y-m-d", strtotime($fecha));
+            $control->fecha=$newDate;
+            $control->avod=$request->input('avod');
+            $control->avid=$request->input('avid');
+            $control->anexod=$request->input('anexod');
+            $control->anexid=$request->input('anexid');
+            $control->biood=$request->input('biood');
+            $control->biooi=$request->input('biooi');
+            $control->balmus=$request->input('balmus');
+            $control->piood=$request->input('piood');
+            $control->piooi=$request->input('piooi');
+            $control->fonojo=$request->input('fonojo');
+            $control->diag=$request->input('diag');
+            $control->plan=$request->input('plan');
+            $control->save();
+            Return(view('Controles.MostrarControl',['control'=>$control,'nhistoria'=>$request->input('historia')]));
+            }
         else
         {
-            $query = DB::table('h__oncols')->where('num_h','=',$request->input('historia'))->get()->first();
-            $control->historia_id=$query->id;
+            return redirect()->back()->withErrors(['errorshow' => 'Ya existe un control con ese número']);
         }
-        $control->num_control=$request->input('ncontrol');
-        $fecha = $request->input('fecha');
-        $newDate = date("Y-m-d", strtotime($fecha));
-        $control->fecha=$newDate;
-        $control->avod=$request->input('avod');
-        $control->avid=$request->input('avid');
-        $control->anexod=$request->input('anexod');
-        $control->anexid=$request->input('anexid');
-        $control->biood=$request->input('biood');
-        $control->biooi=$request->input('biooi');
-        $control->balmus=$request->input('balmus');
-        $control->piood=$request->input('piood');
-        $control->piooi=$request->input('piooi');
-        $control->fonojo=$request->input('fonojo');
-        $control->diag=$request->input('diag');
-        $control->plan=$request->input('plan');
-        $control->save();
-        Return(view('Controles.MostrarControl',['control'=>$control,'nhistoria'=>$request->input('historia')]));
     }
 
     /**
@@ -98,7 +106,25 @@ class ControlController extends Controller
      */
     public function edit($id)
     {
-        //
+        $query = DB::table('controls')->where('num_control','=',$id)->get()->first();
+        $exist = DB::table('controls')->where('num_control','=',$id)->exists();
+        if($exist==true)
+        {
+            if($query->historiano_id=='NULL' || $query->historiano_id=='null')
+            {
+                $historia=DB::table('h__oncols')->where('id','=',$query->historia_id)->get()->first();
+            }
+            else
+            {
+                $historia=DB::table('h__no__oncols')->where('id','=',$query->historia_id)->get()->first();
+            }
+            return(view('Controles.ModificarControl',['control'=>$query,'nhistoria'=>$historia->num_h]));
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['errorshow' => 'No se encontró el control']);
+        }
+
     }
 
     /**
@@ -110,7 +136,25 @@ class ControlController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $query = DB::table('controls')->where('num_control','=',$id)->get()->first();
+        $new =Control::findOrFail($query->id);
+        $fecha = $request->input('fecha');
+        $newDate = date("Y-m-d", strtotime($fecha));
+        $new->fecha=$newDate;
+        $new->avod=$request->input('avod');
+        $new->avid=$request->input('avid');
+        $new->anexod=$request->input('anexod');
+        $new->anexid=$request->input('anexid');
+        $new->biood=$request->input('biood');
+        $new->biooi=$request->input('biooi');
+        $new->balmus=$request->input('balmus');
+        $new->piood=$request->input('piood');
+        $new->piooi=$request->input('piooi');
+        $new->fonojo=$request->input('fonojo');
+        $new->diag=$request->input('diag');
+        $new->plan=$request->input('plan');
+        $new->save();
+         return redirect()->back();
     }
 
     /**

@@ -11,7 +11,8 @@
 @endsection
 
 @section('title')
-<form class="form-group" method="POST" action="VerHistoria" enctype="multipart/form-data">
+<form class="form-group" method="POST" action="/VerHistoria/{{$historia->num_h}}">
+    @method('PUT')
     @csrf
 <h2 class="font-bold">Agregar Nueva Historia</h2>
 @if ($errors->any())
@@ -24,7 +25,11 @@
     </div>
 @endif
 <div class="row">
-    <button class="btn btn-primary pull-right" type="submit">Agregar Historia</button>
+    <div class="form-group">
+        <div class="col-sm-2 pull-right">
+            <button class="btn btn-primary pull-right" type="submit">Guardar Cambios</button>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -262,8 +267,7 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Hermanos:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="anteherm">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anteherm">{{$historia->antec_hermanos}}</textarea>
                     </div>
                 </div>
             </div>
@@ -274,8 +278,7 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Balance Muscular:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="balmus">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="balmus">{{$historia->bal_musc}}</textarea>
                     </div>
                      <div class="hr-line-dashed"></div>
                     <div class="row">
@@ -283,10 +286,10 @@
                             <label class="font-noraml">PIO:</label>
                         </div>
                         <div class="form-group col-sm-4">
-                            <input type="text" class="form-control" name="piod" placeholder="OD">
+                            <input type="text" class="form-control" name="piod" placeholder="OD" value="{{$historia->pio_od}}">
                         </div>
                         <div class="form-group col-sm-4">
-                            <input type="text" class="form-control" name="pioi" placeholder="OI">
+                            <input type="text" class="form-control" name="pioi" placeholder="OI" value="{{$historia->pio_oi}}">
                         </div>
                     </div>
                 </div>
@@ -300,27 +303,40 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <input type="text" class="form-control" name="nembarazo" placeholder="N° Embarazo">
+                            <input type="text" class="form-control" name="nembarazo" placeholder="N° Embarazo" value="{{$historia->N_emb}}">
                         </div>
                     </div>
                         <div class="form-group">
                             <input type="hidden" name="control" value="false">
-                            <label> <input type="checkbox" name="control" value="true">controlado</label>
+                            @if($historia->emb_cont =='1')
+                                <label> <input type="checkbox" name="control" value="true">controlado</label>
+                            @else
+                                <label> <input checked="checked" type="checkbox" value="true" name="control">controlado</label>
+                            @endif
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="row">
                             <div class="form-group col-sm-6">
-                                <input type="text" class="form-control" name="pesonac" placeholder="Peso">
+                                <input type="text" class="form-control" name="pesonac" placeholder="Peso" value="{{$historia->peso_nac}}">
                             </div>
                             <div class="form-group col-sm-6">
-                                <input type="text" class="form-control" name="tallanac" placeholder="Talla">
+                                <input type="text" class="form-control" name="tallanac" placeholder="Talla" value="{{$historia->talla_nac}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <input type="hidden" name="cesar" value="false">
-                            <label> <input type="checkbox" name="cesar" value="true">Cesárea</label>
                             <input type="hidden" name="complic" value="false">
-                            <label> <input type="checkbox" name="complic" value="true">Complicación</label> 
+                            @if($historia->emb_cesar =='1')
+                                <label> <input type="checkbox" name="cesar" value="true">Cesárea</label>
+                            @else
+                                <label> <input checked="checked" type="checkbox" value="true" name="cesar">Cesárea</label>
+                            @endif
+
+                            @if($historia->nac_comp =='1')
+                                <label> <input type="checkbox" name="complic" value="true">Complicaciones</label>
+                            @else
+                                <label> <input checked="checked" type="checkbox" value="true" name="complic">Complicaciones</label>
+                            @endif
                         </div>   
                 </div>
             </div>
@@ -331,14 +347,12 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="font-noraml">Médicos:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="antmedicos">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antmedicos">{{$historia->antec_med}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Quirúrgicos:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="antquirur">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="antquirur">{{$historia->antec_quirur}}</textarea>
                     </div>
                 </div>
             </div>
@@ -348,13 +362,13 @@
                 </div>
                 <div class="ibox-content">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="nhistoria" placeholder="N° Historia">
+                        <input disabled type="text" class="form-control" name="nhistoria" placeholder="N° Historia" value="{{$historia->num_h}}">
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="font-noraml">Fecha:</label>
                         <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="datehist" class="form-control" value="03/04/2014">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="datehist" class="form-control" value="{{$historia->fecha}}">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -363,10 +377,10 @@
                             <label class="font-noraml">AV:</label>
                         </div>
                         <div class="form-group col-sm-4">
-                            <input type="text" class="form-control" name="avod" placeholder="OD">
+                            <input type="text" class="form-control" name="avod" placeholder="OD" value="{{$historia->av_od}}">
                         </div>
                         <div class="form-group col-sm-4">
-                            <input type="text" class="form-control" name="avoi" placeholder="OI">
+                            <input type="text" class="form-control" name="avoi" placeholder="OI" value="{{$historia->av_oi}}">
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -375,13 +389,11 @@
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OD:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="anexod">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anexod">{{$historia->anex_od}}</textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OI:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="anexoi">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="anexoi">{{$historia->anex_oi}}</textarea>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
@@ -389,13 +401,11 @@
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OD:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="biood">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="biood">{{$historia->bio_od}}</textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-noraml">OI:</label>
-                        <textarea class="form-control" style="resize:none;" rows="2" name="biooi">   
-                        </textarea>
+                        <textarea class="form-control" style="resize:none;" rows="2" name="biooi">{{$historia->bio_oi}}</textarea>
                     </div>
                 </div>
             </div>

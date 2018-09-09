@@ -46,14 +46,10 @@
         @endif
         <div class="col-sm-2 pull-right">
         @if($paciente->historia_id==NULL)
-        {
-            <a class="btn btn-primary " href="{{ route('HistoriaNo.edit',['historiano'=>$historia->num_h]) }}">Modificar Historia</a>
-        }
+            <a class="btn btn-primary" href="{{ route('HistoriaNo.edit',['historiano'=>$historia->num_h]) }}">Modificar Historia</a>
         @else
-        {
-            <a class="btn btn-primary " href="{{ route('VerHistoria.edit',['historian'=>$historia->num_h]) }}">Modificar Historia</a>
-        }
-        @enif
+            <a class="btn btn-primary" href="{{ route('VerHistoria.edit',['historian'=>$historia->num_h]) }}">Modificar Historia</a>
+        @endif
         </div>
     </div>
 </div>
@@ -333,10 +329,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @if($historia->emb_cont ==1)
-                        <label> <input disabled="disabled" type="checkbox" name="control" value="false">controlado</label>
+                        @if($historia->emb_cont == '1')
+                        <label> <input disabled="disabled" type="checkbox" name="control" value="true">controlado</label>
                         @else
-                        <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">controlado</label>
+                        <label> <input disabled="disabled" checked="checked" type="checkbox" name="control" value="true">controlado</label>
                         @endif
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -349,16 +345,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @if($historia->emb_cesar ==1)
-                            <label> <input disabled="disabled" type="checkbox" name="control" value="false">Cesárea</label>
+                        @if($historia->emb_cesar =='1')
+                            <label> <input disabled="disabled" type="checkbox" name="control" value="true">Cesárea</label>
                         @else
-                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">Cesárea</label>
+                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control" value="true">Cesárea</label>
                         @endif
 
-                        @if($historia->nac_comp ==1)
-                            <label> <input disabled="disabled" type="checkbox" name="control" value="false">Complicaciones</label>
+                        @if($historia->nac_comp == '1')
+                            <label> <input disabled="disabled" type="checkbox" name="control" value="true">Complicaciones</label>
                         @else
-                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control">Complicaciones</label>
+                            <label> <input disabled="disabled" checked="checked" type="checkbox" name="control" value="true">Complicaciones</label>
                         @endif
                     </div>
                 </div>

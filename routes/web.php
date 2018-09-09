@@ -32,6 +32,8 @@ Route::get('/test','RedirectionsController@test')->name('test');
 
 Route::resource('ListaControles','ListaControlController');
 
+Route::resource('ControlNo','ControlNoController');
+
 Route::resource('AgregarRetino','RetinoController');
 
 Route::resource('AgregarControl','ControlController');
